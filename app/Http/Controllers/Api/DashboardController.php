@@ -75,20 +75,16 @@ class DashboardController extends Controller
                 array_push($mostrarCandidatos, $v);
             }
             $votosNulos = Voto::where('temporada_id', $id)
-            ->groupBy('temporada_id')
-            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
             ->where('votos.candidato_id',2)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
             ->get();
 
             $votosBlanco = Voto::where('temporada_id', $id)
-            ->groupBy('temporada_id')
-            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
             ->where('votos.candidato_id',1)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
-            ->dd()->get();
+            ->get();
         }
         else
         {
@@ -108,16 +104,12 @@ class DashboardController extends Controller
                 ->get();
 
             $votosNulos = Voto::where('temporada_id', $id)
-            ->groupBy('temporada_id')
-            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
             ->where('votos.candidato_id',2)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
             ->get();
 
             $votosBlanco = Voto::where('temporada_id', $id)
-            ->groupBy('temporada_id')
-            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
             ->where('votos.candidato_id',1)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
