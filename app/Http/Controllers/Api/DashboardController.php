@@ -169,8 +169,8 @@ class DashboardController extends Controller
             'votos_candidato' => $mostrarCandidatos,
             'socios_Votaron' => $quienesVotaron,
             'socios_No_Votaron' => $quienesNoVotaron,
-            'votos_nulos' => count($votosNulos),
-            'votos_blanco' => count($votosBlanco),
+            'votos_nulos' => ($votosNulos),
+            'votos_blanco' => ($votosBlanco),
         ];
     }
 
