@@ -59,7 +59,7 @@ class DashboardController extends Controller
                 ->get();
 
             $arrayPuntajesCandidato = [];
-            $colores = ['red','green','blue','orange','yellow','indigo','purple','pink','gray'];
+            $colores = ['red','green','blue','orange','yellow','purple','pink','gray'];
             $total_votos = 0;
             foreach ($totalCandidatos as $candidato) {
                 $total_votos = $this->cantidadVotosPorCandidato($temporadaUltima[0]['id'], $candidato['id']);
