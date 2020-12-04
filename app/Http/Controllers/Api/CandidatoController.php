@@ -15,7 +15,7 @@ class CandidatoController extends Controller
     public function index()
     {
         $candidatos = Candidato::select('temporadas.tema AS temporada','candidatos.*')
-            ->join('temporadas', 'temporadas.id', '=', 'candidatos.temporada_id')->get();
+            ->join('temporadas', 'temporadas.id', '=', 'candidatos.temporada_id')->whereNotIn('id',[1,2])->get();
 
         $temporadas = Temporada::select('id','tema')->get();
 
