@@ -74,11 +74,13 @@ class VotacionController extends Controller
                 ->where('temporada_id', $temporadaActual[0]['id'])
                 ->get();
 
+            if (count($buscarSiVoto) > 0) return response()->json(['status' => 'error', 'message' => 'Ya votó'], 400);
+
             $buscarNumero = Candidato::where('numero', $request->numero)
                 ->where('temporada_id', $temporadaActual[0]['id'])
                 ->get();
 
-            if (count($buscarNumero) == 0 && ($request->numero = '' || $request->numero = 'null' || $request->numero == 'undefined' || $request->numero == null)) {
+            if (count($buscarNumero) == 0 && ($request->numero == '' || $request->numero == 'null' || $request->numero == 'undefined' || $request->numero == null)) {
                 $voto = new Voto();
                 $voto->socio_id = $request->socio_id;
                 $voto->candidato_id = 1;
@@ -98,7 +100,7 @@ class VotacionController extends Controller
                 return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
             }
 
-            if (count($buscarSiVoto) > 0) return response()->json(['status' => 'error', 'message' => 'Ya votó'], 400);
+            
 
             $voto = new Voto();
             $voto->socio_id = $request->socio_id;
