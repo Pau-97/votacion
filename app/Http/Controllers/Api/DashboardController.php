@@ -18,7 +18,7 @@ class DashboardController extends Controller
             $totalSociosF = Socio::all();
             $cantidadSocios = count($totalSociosF);
 
-            $temporadaUltima = Temporada::orderBy('fecha_inicio', 'DESC')
+            $temporadaUltima = Temporada::orderBy('id', 'DESC')
                 ->take(1)
                 ->get();
 
