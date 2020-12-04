@@ -21,6 +21,8 @@ class DashboardController extends Controller
             $temporadaUltima = Temporada::orderBy('id', 'DESC')
                 ->take(1)
                 ->get();
+
+            $id= $temporadaUltima[0]['id'];
                 
             $cantidadVotos = Voto::where('temporada_id', $temporadaUltima[0]['id'])
                 ->groupBy('temporada_id')
