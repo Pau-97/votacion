@@ -14,7 +14,7 @@ class CandidatoSeeder extends Seeder
      */
     public function run(Candidato $candidato)
     {
-        $candidato::insert([
+        $candidato::insert([[
             'id' => 1,
             'nombres' => 'EN BLANCO',
             'dni' => 00000000,
@@ -25,6 +25,6 @@ class CandidatoSeeder extends Seeder
             'nombres' => 'NULO',
             'dni' => 00000000,
             'temporada_id' => 1
-        ]);
+        ]]);
     }
 }
