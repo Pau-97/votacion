@@ -23,80 +23,92 @@ class VotacionController extends Controller
     public function logearVoto(Request $request)
     {
         $socio = Socio::where('codigo', $request->codigo)
-                ->where('dni', $request->dni)
-                ->get();
+            ->where('dni', $request->dni)
+            ->get();
 
-        $temporadaActual = Temporada::where('fecha_inicio','<=', $request->fechaActual)
-                                    ->where('fecha_fin','>=', $request->fechaActual)
-                                    ->orderBy('id','DESC')
-                                    ->take(1)
-                                    ->get();
+        $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)
+            ->where('fecha_fin', '>=', $request->fechaActual)
+            ->orderBy('id', 'DESC')
+            ->take(1)
+            ->get();
 
-        if(count($socio) == 0)
-        {
-            return response()->json(['status' => 'error','message' => 'Credenciales Inválidas'],404);
-        }else{
+        if (count($socio) == 0) {
+            return response()->json(['status' => 'error', 'message' => 'Credenciales Inválidas'], 404);
+        } else {
             return response()->json([
-                'status' => 'success', 
-                'message' => $socio[0], 
+                'status' => 'success',
+                'message' => $socio[0],
                 'temporada' => (count($temporadaActual) == 0) ? 0 : $temporadaActual[0]
-            ],200);
-        }        
-        
+            ], 200);
+        }
     }
 
     public function comprobarTiempo(Request $request)
     {
-        $temporadaActual = Temporada::where('fecha_inicio','<=', $request->fechaActual)
-                                    ->where('fecha_fin','>=', $request->fechaActual)
-                                    ->orderBy('id','DESC')
-                                    ->take(1)
-                                    ->get();
-        
-        if(count($temporadaActual) == 0)
-        {
-            return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'],400);
+        $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)
+            ->where('fecha_fin', '>=', $request->fechaActual)
+            ->orderBy('id', 'DESC')
+            ->take(1)
+            ->get();
+
+        if (count($temporadaActual) == 0) {
+            return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'], 400);
         }
         return response()->json(['status' => 'success', 'message' => 'Si hay votación'], 200);
     }
 
     public function votar(Request $request)
     {
-        try
-        {
-            $temporadaActual = Temporada::where('fecha_inicio','<=', $request->fechaActual)
-            ->where('fecha_fin','>=', $request->fechaActual)
-            ->orderBy('id','DESC')
-            ->take(1)
-            ->get();
+        try {
+            $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)
+                ->where('fecha_fin', '>=', $request->fechaActual)
+                ->orderBy('id', 'DESC')
+                ->take(1)
+                ->get();
 
-            if(count($temporadaActual) == 0)
-            {
-                return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'],400);
+            if (count($temporadaActual) == 0) {
+                return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'], 400);
             }
 
             $buscarSiVoto = Voto::where('socio_id', $request->socio_id)
-            ->where('temporada_id', $temporadaActual[0]['id'])
-            ->get();
-            
-            $buscarNumero = Candidato::where('numero', $request->numero)
-                        ->where('temporada_id', $temporadaActual[0]['id'])
-                        ->get();
-            
-            if(count($buscarNumero) == 0) return response()->json(['status' => 'error', 'message' => 'No se encontró este candidato'],400);
+                ->where('temporada_id', $temporadaActual[0]['id'])
+                ->get();
 
-            if(count($buscarSiVoto) > 0) return response()->json(['status' => 'error', 'message' => 'Ya votó'],400);
-            
+            $buscarNumero = Candidato::where('numero', $request->numero)
+                ->where('temporada_id', $temporadaActual[0]['id'])
+                ->get();
+
+            if (count($buscarNumero) == 0 && ($request->numero = '' || $request->numero = 'null' || $request->numero == 'undefined' || $request->numero == null)) {
+                $voto = new Voto();
+                $voto->socio_id = $request->socio_id;
+                $voto->candidato_id = 1;
+                $voto->temporada_id = $request->temporada_id;
+                $voto->save();
+
+                return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
+            }
+
+            if (count($buscarNumero) == 0 && ($request->numero >= 0 || $request->numero == '0')) {
+                $voto = new Voto();
+                $voto->socio_id = $request->socio_id;
+                $voto->candidato_id = 2;
+                $voto->temporada_id = $request->temporada_id;
+                $voto->save();
+
+                return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
+            }
+
+            if (count($buscarSiVoto) > 0) return response()->json(['status' => 'error', 'message' => 'Ya votó'], 400);
+
             $voto = new Voto();
             $voto->socio_id = $request->socio_id;
             $voto->candidato_id = $buscarNumero[0]['id'];
             $voto->temporada_id = $request->temporada_id;
             $voto->save();
 
-            return response()->json(['status' => 'success', 'message' => 'Se registró su voto'],200);
-        }catch(Exception $error)
-        {
-            return response()->json(['status' => 'error', 'message' => $error ],500);
+            return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
+        } catch (Exception $error) {
+            return response()->json(['status' => 'error', 'message' => $error], 500);
         }
     }
 }
