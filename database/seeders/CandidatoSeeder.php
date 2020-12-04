@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Candidato;
 use Illuminate\Database\Seeder;
 
 class CandidatoSeeder extends Seeder
@@ -11,11 +12,19 @@ class CandidatoSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Candidato $candidato)
     {
-        $rol::create([
+        $candidato::insert([
             'id' => 1,
-            'rol' => 'admin'
+            'nombres' => 'EN BLANCO',
+            'dni' => 00000000,
+            'temporada_id' => 1
+        ],
+        [
+            'id' => 2,
+            'nombres' => 'NULO',
+            'dni' => 00000000,
+            'temporada_id' => 1
         ]);
     }
 }

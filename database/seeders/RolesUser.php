@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Candidato;
+use App\Models\Rol;
 use Illuminate\Database\Seeder;
 
 class RolesUser extends Seeder
@@ -12,19 +12,11 @@ class RolesUser extends Seeder
      *
      * @return void
      */
-    public function run(Candidato $candidato)
+    public function run(Rol $rol)
     {
-        $candidato::insert([
+        $rol::create([
             'id' => 1,
-            'nombres' => 'EN BLANCO',
-            'dni' => 00000000,
-            'temporada_id' => 1
-        ],
-        [
-            'id' => 2,
-            'nombres' => 'NULO',
-            'dni' => 00000000,
-            'temporada_id' => 1
+            'rol' => 'admin'
         ]);
     }
 }
