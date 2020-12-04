@@ -34,7 +34,7 @@ class DashboardController extends Controller
                             ->select('socios.*')
                             ->join('socios','socios.id','votos.socio_id')
                             ->get();
-                            
+
             $obtenerId = [];
             foreach($quienesVotaron as $voto)
             {
@@ -74,6 +74,7 @@ class DashboardController extends Controller
             {
                 array_push($mostrarCandidatos, $v);
             }
+            return 'hola';
         }
         else
         {
