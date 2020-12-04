@@ -21,7 +21,7 @@ class DashboardController extends Controller
             $temporadaUltima = Temporada::orderBy('id', 'DESC')
                 ->take(1)
                 ->get();
-
+            return $temporadaUltima;
             $cantidadVotos = Voto::where('temporada_id', $temporadaUltima[0]['id'])
                 ->groupBy('temporada_id')
                 ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
@@ -163,8 +163,8 @@ class DashboardController extends Controller
             'votos_candidato' => $mostrarCandidatos,
             'socios_Votaron' => $quienesVotaron,
             'socios_No_Votaron' => $quienesNoVotaron,
-            'votos_nulos' => $votosNulos,
-            'votos_blanco' => $votosBlanco,
+            'votos_nulos' => count($votosNulos),
+            'votos_blanco' => count($votosBlanco),
         ];
     }
 
