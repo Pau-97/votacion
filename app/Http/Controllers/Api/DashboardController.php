@@ -182,7 +182,7 @@ class DashboardController extends Controller
     }
 
     public function temporadas(){
-        return Temporada::select('id','tema')->get();
+        return Temporada::select('id','tema')->whereNotIn('id',[1])->get();
     }
 
 }
