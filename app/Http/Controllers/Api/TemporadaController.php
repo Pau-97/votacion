@@ -12,12 +12,13 @@ class TemporadaController extends Controller
     public function index()
     {
         return Temporada::orderBy('fecha_inicio', 'DESC')
+        ->whereNotIn('id',1)
         ->get();
     }
 
     public function show($id)
     {
-        $temporada = Temporada::where('id', $id)->get();
+        $temporada = Temporada::where('id', $id)->whereNotIn('id',1)->get();
         return $temporada;
     }
 
