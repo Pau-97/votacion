@@ -88,7 +88,6 @@ class DashboardController extends Controller
             ->where('votos.candidato_id',1)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
-            ->take(1)
             ->get();
         }
         else
@@ -122,7 +121,6 @@ class DashboardController extends Controller
             ->where('votos.candidato_id',1)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
-            ->take(1)
             ->get();
 
             $quienesVotaron = Voto::where('temporada_id', $id)
