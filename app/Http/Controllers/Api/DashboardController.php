@@ -88,7 +88,7 @@ class DashboardController extends Controller
             ->where('votos.candidato_id',1)
             ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
             ->orderBy('temporadas.fecha_inicio', 'DESC')
-            ->dd();
+            ->dd()->get();
         }
         else
         {
