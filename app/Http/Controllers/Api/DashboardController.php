@@ -74,7 +74,22 @@ class DashboardController extends Controller
             {
                 array_push($mostrarCandidatos, $v);
             }
-            return 'hola';
+            $votosNulos = Voto::where('temporada_id', $id)
+            ->groupBy('temporada_id')
+            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
+            ->where('candidato_id',2)
+            ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
+            ->orderBy('temporadas.fecha_inicio', 'DESC')
+            ->get();
+
+            $votosBlanco = Voto::where('temporada_id', $id)
+            ->groupBy('temporada_id')
+            ->select(Voto::raw('count(votos.id) AS total'), 'temporadas.*')
+            ->where('candidato_id',1)
+            ->join('temporadas', 'temporadas.id', 'votos.temporada_id')
+            ->orderBy('temporadas.fecha_inicio', 'DESC')
+            ->take(1)
+            ->get();
         }
         else
         {
