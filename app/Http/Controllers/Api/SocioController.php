@@ -21,13 +21,9 @@ class SocioController extends Controller
     {
         try {
 
-            $buscarDNI = Socio::where('dni', $request->dni)->get();
-            if (count($buscarDNI) > 0) return response()->json(['status' => 'error', 'message' => 'Ya se registró este dni'], 500);
-
             $buscarSocio = Socio::where('codigo', $request->codigo)->get();
             if (count($buscarSocio) > 0) return response()->json(['status' => 'error', 'message' => 'Ya se registró este código'], 500);
             $socio = new Socio();
-            $socio->dni = $request->dni;
             $socio->nombres = $request->nombres;
             $socio->codigo = $request->codigo;
             $socio->save();
@@ -52,7 +48,6 @@ class SocioController extends Controller
     {
         try {
             $socios = Socio::orWhere('nombres', 'LIKE', '%' . $request->buscar . '%')
-                ->orWhere('dni', 'LIKE', '%' . $request->buscar . '%')
                 ->orWhere('codigo', 'LIKE', '%' . $request->buscar . '%')
                 ->get();
             return $socios;
@@ -65,7 +60,6 @@ class SocioController extends Controller
     {
         try {
             $socio = Socio::find($id);
-            $socio->dni = $request->dni;
             $socio->nombres = $request->nombres;
             $socio->codigo = $request->codigo;
             $socio->save();

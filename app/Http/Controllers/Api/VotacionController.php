@@ -23,7 +23,7 @@ class VotacionController extends Controller
     public function logearVoto(Request $request)
     {
         $socio = Socio::where('codigo', $request->codigo)
-            ->where('dni', $request->dni)
+            ->where('pass', $request->dni)
             ->get();
 
         $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)

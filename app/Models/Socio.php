@@ -10,4 +10,5 @@ class Socio extends Model
     use HasFactory;
     protected $table = 'socios';
     protected $fillable = ['nombre','dni','codigo'];
+    protected $hidden = ['pass'];
 }
