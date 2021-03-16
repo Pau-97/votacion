@@ -60,6 +60,19 @@ class VotacionController extends Controller
     public function votar(Request $request)
     {
         try {
+            $info = $request->info;
+            $cantidadLetras = 0;
+            $obtenerNuevo = 0;
+
+            for($i = 0; $i<=3; $i++)
+            {
+                $cantidadLetras = strlen($info) / 2;
+                $obtenerNuevo = substr($info, 0, $cantidadLetras);
+                $info = base64_decode($obtenerNuevo);
+            }
+
+            $request = json_decode($info);
+
             $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)
                 ->where('fecha_fin', '>=', $request->fechaActual)
                 ->orderBy('id', 'DESC')
