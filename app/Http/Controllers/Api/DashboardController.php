@@ -144,15 +144,17 @@ class DashboardController extends Controller
                 ->get();
 
             $arrayPuntajesCandidato = [];
-            $colores = ['red','green','blue','orange','yellow','indigo','purple','pink','gray'];
+            $colores = ['red','green','blue','orange','yellow','indigo','purple','pink','gray','red','green','blue','orange','yellow','indigo','purple','pink','gray','red','green','blue','orange','yellow','indigo','purple','pink','gray','red','green','blue','orange','yellow','indigo','purple','pink','gray'];
             $total_votos = 0;
+            $i = 0;
             foreach ($totalCandidatos as $candidato) {
+                $i++;
                 $total_votos = $this->cantidadVotosPorCandidato($id, $candidato['id']);
                 array_push($arrayPuntajesCandidato, [
                     'candidato' => $candidato,
                     'total_votos' => count($total_votos) == 0 ? 0 : $total_votos[0]['total'],
                     'porcentaje' => round((100 * (count($total_votos) == 0 ? 0 : $total_votos[0]['total']) / ((count($cantidadVotos) == 0) ? 0 : $cantidadVotos[0]['total'])),2),
-                    'colores' => $colores[random_int(0,(count($colores) - 1))]
+                    'colores' => $colores[$i]
                 ]);
             }
             $mostrarCandidatos = [];
