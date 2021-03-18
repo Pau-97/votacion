@@ -8,6 +8,8 @@ use App\Models\Socio;
 use App\Models\Voto;
 use App\Models\Candidato;
 use Illuminate\Http\Request;
+use App\Exports\SociosVotacionExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -189,6 +191,13 @@ class DashboardController extends Controller
             ->get();
 
         return $cantidadVotos;
+    }
+
+    public function export() 
+    {
+        $ldate = date('Y-m-d-H-i-s');
+        
+        return Excel::download(new SociosVotacionExport, 'Votacion_socios-'.$ldate.'.xlsx');
     }
 
     public function temporadas(){

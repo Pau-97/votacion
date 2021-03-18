@@ -32,6 +32,7 @@ Route::post('buscarSocios', 'SocioController@buscador');
 //DASHBOARD
 Route::get('dashboard/{id}','DashboardController@index');
 Route::get('temporadasDashboard','DashboardController@temporadas');
+Route::get('sociosVotaron/export', 'DashboardController@export');
 });
 
 //Login
@@ -39,7 +40,6 @@ Route::post('login', 'UserController@login');
 Route::post('logearVoto', 'VotacionController@logearVoto');
 
 Route::post('comprobarTiempo', 'VotacionController@comprobarTiempo');
-
 
 //VOTOS
 Route::post('votacion', 'VotacionController@votar');
