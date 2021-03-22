@@ -75,11 +75,11 @@ class VotacionController extends Controller
             }
         }
     
-        return '127.0.0.1'; // Retornamos '?' si no hay ninguna IP o no pase el filtro
+        return '?'; // Retornamos '?' si no hay ninguna IP o no pase el filtro
     } 
     public function votar(Request $request)
     {
-        return $this->getUserIpAddress();
+        $ipClient = $this->getUserIpAddress();
         try {
             $info = $request->info;
             $cantidadLetras = 0;
@@ -119,6 +119,7 @@ class VotacionController extends Controller
                 $voto->socio_id = $request->socio_id;
                 $voto->candidato_id = 1;
                 $voto->temporada_id = $request->temporada_id;
+                $voto->ip_client = $ipClient;
                 $voto->save();
 
                 return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
@@ -129,6 +130,7 @@ class VotacionController extends Controller
                 $voto->socio_id = $request->socio_id;
                 $voto->candidato_id = 2;
                 $voto->temporada_id = $request->temporada_id;
+                $voto->ip_client = $ipClient;
                 $voto->save();
 
                 return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
@@ -140,6 +142,7 @@ class VotacionController extends Controller
             $voto->socio_id = $request->socio_id;
             $voto->candidato_id = $buscarNumero[0]['id'];
             $voto->temporada_id = $request->temporada_id;
+            $voto->ip_client = $ipClient;
             $voto->save();
 
             return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
