@@ -77,9 +77,19 @@ class VotacionController extends Controller
     
         return '?'; // Retornamos '?' si no hay ninguna IP o no pase el filtro
     } 
+
+    protected function obtenerUbicacion($ip){
+        $respuesta = file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip);
+        $res = json_decode($respuesta);
+        $pais = $res['geoplugin_countryName'];
+        $ciudad = $res['geoplugin_regionName'];
+        $ubicacionName = $pais. '-' . $ciudad; 
+        return $ubicacionName;
+    }
     public function votar(Request $request)
     {
         $ipClient = $this->getUserIpAddress();
+        $ubicacionName = $this->obtenerUbicacion($ipClient);
         try {
             $info = $request->info;
             $cantidadLetras = 0;
@@ -120,6 +130,7 @@ class VotacionController extends Controller
                 $voto->candidato_id = 1;
                 $voto->temporada_id = $request->temporada_id;
                 $voto->ip_client = $ipClient;
+                $voto->ubicacion = $ubicacionName;
                 $voto->save();
 
                 return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
@@ -131,6 +142,7 @@ class VotacionController extends Controller
                 $voto->candidato_id = 2;
                 $voto->temporada_id = $request->temporada_id;
                 $voto->ip_client = $ipClient;
+                $voto->ubicacion = $ubicacionName;
                 $voto->save();
 
                 return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
@@ -143,6 +155,7 @@ class VotacionController extends Controller
             $voto->candidato_id = $buscarNumero[0]['id'];
             $voto->temporada_id = $request->temporada_id;
             $voto->ip_client = $ipClient;
+            $voto->ubicacion = $ubicacionName;
             $voto->save();
 
             return response()->json(['status' => 'success', 'message' => 'Se registró su voto'], 200);
