@@ -79,11 +79,10 @@ class VotacionController extends Controller
     } 
 
     protected function obtenerUbicacion($ip){
-        $respuesta = file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip);
-        $res = json_decode($respuesta);
+        $res = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip), true);
         $pais = $res['geoplugin_countryName'];
         $ciudad = $res['geoplugin_regionName'];
-        $ubicacionName = $pais. '-' . $ciudad; 
+        $ubicacionName = $ciudad. '-' . $pais; 
         return $ubicacionName;
     }
     public function votar(Request $request)
