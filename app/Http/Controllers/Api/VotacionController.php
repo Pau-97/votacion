@@ -57,8 +57,29 @@ class VotacionController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Si hay votación'], 200);
     }
 
+    protected function getUserIpAddress() {
+
+        foreach ( [ 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ] as $key ) {
+    
+            // Comprobamos si existe la clave solicitada en el array de la variable $_SERVER 
+            if ( array_key_exists( $key, $_SERVER ) ) {
+    
+                // Eliminamos los espacios blancos del inicio y final para cada clave que existe en la variable $_SERVER 
+                foreach ( array_map( 'trim', explode( ',', $_SERVER[ $key ] ) ) as $ip ) {
+    
+                    // Filtramos* la variable y retorna el primero que pase el filtro
+                    if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false ) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+    
+        return '127.0.0.1'; // Retornamos '?' si no hay ninguna IP o no pase el filtro
+    } 
     public function votar(Request $request)
     {
+        return $this->getUserIpAddress();
         try {
             $info = $request->info;
             $cantidadLetras = 0;
