@@ -14,9 +14,12 @@ class RolesUser extends Seeder
      */
     public function run(Rol $rol)
     {
-        $rol::create([
+        $rol::insert([
             'id' => 1,
             'rol' => 'admin'
+        ],[
+            'id' => 2,
+            'rol' => 'reportes'
         ]);
     }
 }
