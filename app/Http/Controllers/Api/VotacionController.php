@@ -43,10 +43,11 @@ class VotacionController extends Controller
         }
     }
 
-    public function comprobarTiempo(Request $request)
+    public function comprobarTiempo()
     {
-        $temporadaActual = Temporada::where('fecha_inicio', '<=', $request->fechaActual)
-            ->where('fecha_fin', '>=', $request->fechaActual)
+        $hoy = date("Y-m-d H:i:s");
+        $temporadaActual = Temporada::where('fecha_inicio', '<=', $hoy)
+            ->where('fecha_fin', '>=', $hoy)
             ->orderBy('id', 'DESC')
             ->take(1)
             ->get();
@@ -87,6 +88,11 @@ class VotacionController extends Controller
     }
     public function votar(Request $request)
     {
+        $estadoVoto = $this->comprobarTiempo();
+        if($estadoVoto['status'] == 'error'){
+            return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'], 400);
+        } 
+
         $ipClient = $this->getUserIpAddress();
         $ubicacionName = $this->obtenerUbicacion($ipClient);
         try {
