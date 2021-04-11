@@ -58,6 +58,21 @@ class VotacionController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Si hay votación'], 200);
     }
 
+    protected function comprobarEstado()
+    {
+        $hoy = date("Y-m-d H:i:s");
+        $temporadaActual = Temporada::where('fecha_inicio', '<=', $hoy)
+            ->where('fecha_fin', '>=', $hoy)
+            ->orderBy('id', 'DESC')
+            ->take(1)
+            ->get();
+
+        if (count($temporadaActual) == 0) {
+            return false;
+        }
+        return true;
+    }
+
     protected function getUserIpAddress() {
 
         foreach ( [ 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ] as $key ) {
@@ -86,10 +101,11 @@ class VotacionController extends Controller
         $ubicacionName = $ciudad. '-' . $pais; 
         return $ubicacionName;
     }
+
     public function votar(Request $request)
     {
-        $estadoVoto = $this->comprobarTiempo();
-        if($estadoVoto['status'] == 'error'){
+        $estadoVoto = $this->comprobarEstado();
+        if(!$estadoVoto){
             return response()->json(['status' => 'error', 'message' => 'Se terminó el tiempo para votar'], 400);
         } 
 
