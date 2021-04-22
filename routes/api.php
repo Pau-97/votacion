@@ -33,6 +33,7 @@ Route::post('buscarSocios', 'SocioController@buscador');
 Route::get('dashboard/{id}','DashboardController@index');
 Route::get('temporadasDashboard','DashboardController@temporadas');
 Route::get('sociosVotaron/export', 'DashboardController@export');
+Route::post('dashboard-final/exportPdf', 'DashboardController@downloadPdf');
 });
 
 //Login
@@ -45,4 +46,3 @@ Route::post('comprobarTiempo', 'VotacionController@comprobarTiempo');
 Route::post('votacion', 'VotacionController@votar');
 Route::post('candidatosTemporada', 'VotacionController@candidatosTemporada');
 
-Route::post('dashboard-final/exportPdf', 'DashboardController@downloadPdf');

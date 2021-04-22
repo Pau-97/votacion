@@ -233,8 +233,6 @@ class DashboardController extends Controller
             <li style="padding-top: 20px;"><b>DNI:</b></li>
             <li style="padding-bottom: 20px;">&nbsp;</li>
         </ul>
-        <br>
-        <br>
         <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
             <li>_____________________________________</li>
             <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
