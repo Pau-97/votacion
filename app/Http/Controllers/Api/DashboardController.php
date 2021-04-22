@@ -208,12 +208,14 @@ class DashboardController extends Controller
 
     public function downloadPdf(Request $request){
         $ldate = date('Y-m-d-H-i-s');
-        if($request->hasFile('imagen')) {
-            $imagen_final = $request->file('imagen');
-            Storage::disk('public')->putFileAs('', $imagen_final, 'votacion_resultados'.$ldate.'.png');
-        }
+        $base64_image = $request->input('imagen'); // your base64 encoded     
+        @list($type, $file_data) = explode(';', $base64_image);
+        @list(, $file_data) = explode(',', $file_data); 
+        $imageName = str_random(10).'.'.'png';   
+        Storage::disk('public')->putFileAs('', base64_decode($file_data), 'votacion_resultados'.$ldate.'.png');
+        
         $ldate_pdf = date('Y-m-d H:i:s');
-        return $imagen_final;
+        return $file_data;
         $pdf = app('dompdf.wrapper');
         $html  = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <h1>Resultados de votación</h1>';
