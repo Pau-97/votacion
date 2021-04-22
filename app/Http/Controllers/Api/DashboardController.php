@@ -213,7 +213,7 @@ class DashboardController extends Controller
             Storage::disk('public')->putFileAs('', $imagen_final, 'votacion_resultados'.$ldate.'.png');
         }
         $ldate_pdf = date('Y-m-d H:i:s');
-
+        return $imagen_final;
         $pdf = app('dompdf.wrapper');
         $html  = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <h1>Resultados de votación</h1>';
