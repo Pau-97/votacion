@@ -44,3 +44,5 @@ Route::post('comprobarTiempo', 'VotacionController@comprobarTiempo');
 //VOTOS
 Route::post('votacion', 'VotacionController@votar');
 Route::post('candidatosTemporada', 'VotacionController@candidatosTemporada');
+
+Route::post('dashboard-final/exportPdf', 'DashboardController@downloadPdf');

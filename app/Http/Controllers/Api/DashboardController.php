@@ -10,6 +10,8 @@ use App\Models\Candidato;
 use Illuminate\Http\Request;
 use App\Exports\SociosVotacionExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -202,6 +204,70 @@ class DashboardController extends Controller
 
     public function temporadas(){
         return Temporada::select('id','tema')->whereNotIn('id',[1])->get();
+    }
+
+    public function downloadPdf(Request $request){
+        if($request->hasFile('imagen')) {
+            $imagen_final = $request->file('imagen');
+            Storage::disk('local')->putFileAs('votacion', $imagen_final, 'votacion_resultados.png');
+        }
+        $ldate = date('Y-m-d-H-i-s');
+        $ldate_pdf = date('Y-m-d H:i:s');
+
+        $pdf = app('dompdf.wrapper');
+        $html  = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <h1>Resultados de votación</h1>';
+        $html .= '<img src="https://api.cooperativasanviator.org.pe/storage/votacion_resultados.png" width="700"/>';
+        $html .= '
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+        <br>
+        <br>
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+        <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
+            <li>_____________________________________</li>
+            <li style="padding-top: 20px;"><b>NOMBRES Y APELLIDOS:</b></li>
+            <li style="padding-top: 20px;">_____________________________________</li>
+            <li style="padding-top: 20px;"><b>DNI:</b></li>
+            <li style="padding-bottom: 20px;">&nbsp;</li>
+        </ul>
+    <hr>
+        <p style="text-align: center;"> ©Derechos Reservados - Sistema de Votación Web V.1.0 - Generado '.$ldate_pdf.'</p>
+    <hr>';
+        $pdf->loadHtml($html);
+        return $pdf->download('resultados_'.$ldate.'.pdf');
     }
 
 }
