@@ -33,9 +33,9 @@ Route::post('buscarSocios', 'SocioController@buscador');
 Route::get('dashboard/{id}','DashboardController@index');
 Route::get('temporadasDashboard','DashboardController@temporadas');
 Route::get('sociosVotaron/export', 'DashboardController@export');
-Route::post('dashboard-final/exportPdf', 'DashboardController@downloadPdf');
 });
 
+Route::post('dashboard-final/exportPdf', 'DashboardController@downloadPdf');
 //Login
 Route::post('login', 'UserController@login');
 Route::post('logearVoto', 'VotacionController@logearVoto');

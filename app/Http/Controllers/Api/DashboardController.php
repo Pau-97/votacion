@@ -207,17 +207,17 @@ class DashboardController extends Controller
     }
 
     public function downloadPdf(Request $request){
+        $ldate = date('Y-m-d-H-i-s');
         if($request->hasFile('imagen')) {
             $imagen_final = $request->file('imagen');
-            Storage::disk('public')->putFileAs('', $imagen_final, 'votacion_resultados.png');
+            Storage::disk('public')->putFileAs('', $imagen_final, 'votacion_resultados'.$ldate.'.png');
         }
-        $ldate = date('Y-m-d-H-i-s');
         $ldate_pdf = date('Y-m-d H:i:s');
 
         $pdf = app('dompdf.wrapper');
         $html  = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <h1>Resultados de votación</h1>';
-        $html .= '<img src="https://api.cooperativasanviator.org.pe/storage/votacion/votacion_resultados.png" width="700"/>';
+        $html .= '<img src="https://api.cooperativasanviator.org.pe/storage/votacion/votacion_resultados'.$ldate.'.png" width="700"/>';
         $html .= '
         <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
             <li>_____________________________________</li>
