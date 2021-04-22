@@ -209,7 +209,7 @@ class DashboardController extends Controller
     public function downloadPdf(Request $request){
         if($request->hasFile('imagen')) {
             $imagen_final = $request->file('imagen');
-            Storage::disk('public')->putFileAs('votacion', $imagen_final, 'votacion_resultados.png');
+            Storage::disk('public')->putFileAs('/votacion', $imagen_final, 'votacion_resultados.png');
         }
         $ldate = date('Y-m-d-H-i-s');
         $ldate_pdf = date('Y-m-d H:i:s');
