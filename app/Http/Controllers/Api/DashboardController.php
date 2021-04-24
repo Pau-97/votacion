@@ -217,7 +217,7 @@ class DashboardController extends Controller
         $pdf = app('dompdf.wrapper');
         $html  = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <h1>Resultados de votación</h1>';
-        $html .= '<img src="https://api.cooperativasanviator.org.pe/storage/votacion/votacion_resultados'.$ldate.'.png" width="700" height="980"/>';
+        $html .= '<img src="https://api.cooperativasanviator.org.pe/storage/votacion/votacion_resultados'.$ldate.'.png" width="700" height="900"/>';
         $html .= '
         <ul style="list-style: none; font-size: small; padding-top: 50px; border: 1px solid;">
             <li>_____________________________________</li>
